@@ -8,6 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(
@@ -44,5 +47,8 @@ public class Book {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status availabilityStatus = Status.AVAILABALE;
+
+    @OneToMany(mappedBy = "book")
+    private List<Rental> rentals = new ArrayList<>();
 }
 

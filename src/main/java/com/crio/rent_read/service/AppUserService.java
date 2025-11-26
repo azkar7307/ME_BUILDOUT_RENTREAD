@@ -4,6 +4,7 @@ import com.crio.rent_read.dto.request.RegisterRequest;
 import com.crio.rent_read.dto.response.UserResponse;
 
 public interface AppUserService {
-    UserResponse registerUser(RegisterRequest sampleUser);
+    
+    UserResponse registerUser(RegisterRequest registerRequest);
 
 }

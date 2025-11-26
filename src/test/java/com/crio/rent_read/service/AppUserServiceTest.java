@@ -15,8 +15,6 @@ import com.crio.rent_read.entity.enums.Role;
 import com.crio.rent_read.repository.AppUserRepository;
 import com.crio.rent_read.service.impl.AppUserServiceImpl;
 import com.crio.rent_read.service.impl.ValidationServiceImpl;
-import org.apache.catalina.connector.Response;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

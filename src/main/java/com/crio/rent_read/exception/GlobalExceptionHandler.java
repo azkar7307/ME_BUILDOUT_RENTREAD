@@ -19,9 +19,9 @@ import org.springframework.web.context.request.WebRequest;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(
-            NotFoundException ex,
+            EntityNotFoundException ex,
             WebRequest request
     ) {
         HttpStatus status = HttpStatus.NOT_FOUND;

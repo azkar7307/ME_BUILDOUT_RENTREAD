@@ -32,7 +32,7 @@ public class AuthController {
     public ResponseEntity<UserResponse> loginRequest(@RequestBody LogInRequest loginRequest) {
         log.info("Request received to login to account");
         UserResponse userResponse = authService.loginUser(loginRequest);
-        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
 

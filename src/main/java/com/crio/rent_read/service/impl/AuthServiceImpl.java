@@ -31,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UserResponse registerUser(RegisterRequest registerRequset) {
-        validationService.validateUserExistsByEmail(registerRequset.getEmail());
+        // validationService.validateUserExistsByEmail(registerRequset.getEmail());
         AppUser newUser = modelMapper.map(registerRequset, AppUser.class);
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         AppUser savedUser = userRepository.save(newUser);
@@ -46,22 +46,23 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserResponse loginUser(LogInRequest request) {
         
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-            request.getEmail(), 
-            request.getPassword()
-        );
-
-        authenticationManager.authenticate(authentication);
+        authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                request.getEmail(), 
+                request.getPassword()                
+            )
+        );                                      
+                
+        
+        // authenticationManager.authenticate(authentication);
         AppUser user = validationService.validateAndGetUserByEmail(request.getEmail());
         log.info("User '{}' login successfull", Util.mask(user.getEmail()));
         return modelMapper.map(user, UserResponse.class);
-
-        // authenticationManager.authenticate(
-        //     new UsernamePasswordAuthenticationToken(
-        //         request.getEmail(), 
-        //         request.getPassword()
-        //     )
-        // );                                      
+                
+                // Authentication authentication = new UsernamePasswordAuthenticationToken(
+                //     request.getEmail(), 
+                //     request.getPassword()
+                // );
     }
 
 }

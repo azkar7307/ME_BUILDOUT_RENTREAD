@@ -21,4 +21,6 @@ public interface ValidationService {
     Rental validateAndGetRental(Long rentalId);
     
     void validateReturnProcess(Rental rental);
+
+    AppUser validateAndGetUserByEmail(String email) ;
 }

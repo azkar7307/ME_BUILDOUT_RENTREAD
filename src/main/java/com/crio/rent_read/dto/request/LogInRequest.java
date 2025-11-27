@@ -1,6 +1,5 @@
 package com.crio.rent_read.dto.request;
 
-import com.crio.rent_read.entity.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -13,11 +12,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequest {
+public class LogInRequest {
 
-    private String firstName;
-    private String lastName;
-    
     @NotBlank(message = "Email must not be empty or null")
     @Email(message = "Email must be valid")
     private String email;
@@ -25,7 +21,5 @@ public class RegisterRequest {
     @NotBlank (message = "Password must not be empty")
     @Size(min = 6, message = "Password must contains at least 6 character long")
     private String password;
-
-    private Role role;
-       
+    
 }

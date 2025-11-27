@@ -8,7 +8,11 @@ public class EntityNotFoundException extends RuntimeException {
     public EntityNotFoundException(Long id, String resourceName) {
         super(resourceName + " with ID '" + id + "' not found.");
     }
-
+    
+    public EntityNotFoundException(String email, String resourceName) {
+        super(resourceName + " with email '" + email + "' not found.");
+    }
+    
     public EntityNotFoundException(String msg) {
         super(msg);
     }

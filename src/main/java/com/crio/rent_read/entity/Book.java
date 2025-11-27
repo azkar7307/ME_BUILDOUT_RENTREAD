@@ -46,7 +46,7 @@ public class Book {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Status availabilityStatus = Status.AVAILABALE;
+    private Status availabilityStatus = Status.AVAILABLE;
 
     @OneToMany(mappedBy = "book")
     private List<Rental> rentals = new ArrayList<>();

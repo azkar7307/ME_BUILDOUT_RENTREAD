@@ -68,7 +68,7 @@ public class RentalServiceImpl implements RentalService {
         validationService.validateReturnProcess(rental);
 
         Book book = rental.getBook();
-        book.setAvailabilityStatus(Status.AVAILABALE);
+        book.setAvailabilityStatus(Status.AVAILABLE);
         rental.setReturnDate(LocalDateTime.now());
         log.info("Book with Rental '{}' has been successfully returned", rentalId);
     }

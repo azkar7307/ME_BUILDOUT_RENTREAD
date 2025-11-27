@@ -1,7 +1,7 @@
 package com.crio.rent_read.entity.enums;
 
 public enum Status {
-    AVAILABALE,
+    AVAILABLE,
     NOT_AVAILABLE
 }
 

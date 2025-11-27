@@ -87,7 +87,7 @@ public class BookServiceImplTest {
                 "Test Book 1",
                 "Test Author 1",
                 "COMEDY",
-                Status.AVAILABALE
+                Status.AVAILABLE
         );
         // setup
         when(validationServiceImpl.validateAndGetBook(anyLong())).thenReturn(sampleBook);
@@ -100,7 +100,7 @@ public class BookServiceImplTest {
 
         assertNotNull(bookResponse);
         assertEquals(updateBookRequest.getGenre(), bookResponse.getGenre());
-        assertEquals(Status.AVAILABALE.name(), bookResponse.getAvailabilityStatus());
+        assertEquals(Status.AVAILABLE.name(), bookResponse.getAvailabilityStatus());
 
         //verify
         verify(validationServiceImpl, times(1)).validateAndGetBook(anyLong());

@@ -42,7 +42,7 @@ public class ValidationServiceImpl implements ValidationService {
     @Override
     @Transactional(readOnly = true)
     public Book validateAndGetAvailableBook(Long bookId) {
-        Book book = bookRepository.findByIdAndAvailabilityStatus(bookId, Status.AVAILABALE)
+        Book book = bookRepository.findByIdAndAvailabilityStatus(bookId, Status.AVAILABLE)
             .orElseThrow(
                 () -> new EntityNotFoundException("Book '" + bookId + "' not availabe for rent")
             );
@@ -88,7 +88,7 @@ public class ValidationServiceImpl implements ValidationService {
     @Override
     @Transactional(readOnly = true)
     public void validateReturnProcess(Rental rental) {
-        if (rental.getBook().getAvailabilityStatus().name().equals(Status.AVAILABALE.name())) {
+        if (rental.getBook().getAvailabilityStatus().name().equals(Status.AVAILABLE.name())) {
             throw new BadRequestException(
                 "Return process failed. Video already marked available for rental '"
                 + rental.getId()

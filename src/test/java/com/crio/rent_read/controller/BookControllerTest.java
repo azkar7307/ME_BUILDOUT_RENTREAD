@@ -7,9 +7,11 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete; 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.util.List;
 import com.crio.rent_read.config.SecurityConfig;
 import com.crio.rent_read.dto.request.BookRequest;
 import com.crio.rent_read.dto.response.BookResponse;
@@ -41,7 +43,7 @@ public class BookControllerTest {
     private UserDetailsServiceImpl userDetailsService;  // mock dependency
 
 
-
+// ####################################################################################################
     // works
     // @Test
     // @WithMockUser(username = "admin@rentread.com", password = "admin123456",  roles = {"ADMIN"})
@@ -174,7 +176,7 @@ public class BookControllerTest {
                         }
                         """)
         )
-            .andExpect(status().isOk());
+            .andExpect(status().isNoContent());
     
         verify(bookService, times(1)).deleteBookById(anyLong());
     }
@@ -263,4 +265,50 @@ public class BookControllerTest {
         verify(bookService, never()).deleteBookById(anyLong());
     }
 
+    // ######################## GET /books/available ##########################################
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    void getAvalilableBook_With_ADMIN_Role_Return_Ok() throws Exception {
+        // Arrange
+        List<BookResponse> books = List.of(new BookResponse());
+
+        // setup
+        when(bookService.getAllAvalilableBooks()).thenReturn(books);
+
+        // Execute
+        mockMvc.perform(get("/books/available"))
+                .andExpect(status().isOk());
+
+        // verify
+        verify(bookService, times(1)).getAllAvalilableBooks();
+    }
+
+    @Test
+    @WithMockUser(roles = {"USER"})
+    void getAvalilableBook_With_USER_Role_Return_Ok() throws Exception {
+        // Arrange
+        List<BookResponse> books = List.of(new BookResponse());
+
+        // setup
+        when(bookService.getAllAvalilableBooks()).thenReturn(books);
+
+        // Execute
+        mockMvc.perform(get("/books/available"))
+                .andExpect(status().isOk());
+
+        // verify
+        verify(bookService, times(1)).getAllAvalilableBooks();
+    }
+
+    @Test
+    void getAvalilableBook_When_UNAUTHENTICATED_Throw_Unauthorized() throws Exception {
+
+        // Execute
+        mockMvc.perform(get("/books/available"))
+                .andExpect(status().isUnauthorized());
+
+        // verify
+        verify(bookService, never()).getAllAvalilableBooks();
+    }
 }

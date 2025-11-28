@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDateTime;
-import com.crio.rent_read.entity.Book;
+
 
 @Getter
 @Setter
@@ -13,7 +13,7 @@ import com.crio.rent_read.entity.Book;
 @AllArgsConstructor
 public class RentalResponse {
     private Long id;
-    private Book book;
-    private LocalDateTime rentedAt;
+    private BookResponse book;
+    private LocalDateTime rentalDate;
     private LocalDateTime returnDate;
 }

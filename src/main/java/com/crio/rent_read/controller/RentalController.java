@@ -29,7 +29,7 @@ public class RentalController {
     ) {
         log.info("Process the rental request: User '{}' is requesting to rent Book '{}'", userId, bookId);
         RentalResponse response = rentalService.rentBook(userId, bookId);
-        return new ResponseEntity<RentalResponse>(response, HttpStatus.OK);
+        return new ResponseEntity<RentalResponse>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/active-rentals/users/{userId}")
@@ -50,6 +50,6 @@ public class RentalController {
              rentalId
         );
         rentalService.returnBook(rentalId);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 }

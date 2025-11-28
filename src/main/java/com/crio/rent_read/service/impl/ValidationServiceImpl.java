@@ -27,7 +27,7 @@ public class ValidationServiceImpl implements ValidationService {
     @Override
     @Transactional(readOnly = true)
     public void validateUserExistsByEmail(String email) {
-        if (!userRepository.existsByEmail(email)) {
+        if (userRepository.existsByEmail(email)) {
             throw new ConflictException(Util.mask(email), "User");
         }
     }
@@ -72,7 +72,7 @@ public class ValidationServiceImpl implements ValidationService {
     public void validateRentalEligiblity(Long userId) {
         // count active rentals
         if (rentalRepository.findAllUsersActiveRentals(userId).size() >= 2) {
-            throw new ConflictException("User '" + userId + "' " + "exceed maximum rental count");
+            throw new BadRequestException("User '" + userId + "' " + "exceed maximum rental count");
         }
     }
 
@@ -86,7 +86,6 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public void validateReturnProcess(Rental rental) {
         if (rental.getBook().getAvailabilityStatus().name().equals(Status.AVAILABLE.name())) {
             throw new BadRequestException(
@@ -113,8 +112,7 @@ public class ValidationServiceImpl implements ValidationService {
     public AppUser validateAndGetUserByEmail(String email) {
         AppUser user = userRepository.findByEmail(email);
         if (user == null) {
-            // throw new EntityNotFoundException(Util.mask(email), "User");
-            throw new EntityNotFoundException(email, "User");
+            throw new EntityNotFoundException(Util.mask(email), "User");
 
         }
         return user;

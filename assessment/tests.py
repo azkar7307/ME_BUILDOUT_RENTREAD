@@ -24,94 +24,51 @@ def create_admin_account():
         "lastName": "UserTest",
         "role": "ADMIN"
     }
-    response = client.post("auth/signup", json=admin_creds)
+    response = client.post("/auth/signup", json=admin_creds)
     assertions.assert_status_code(response, 201)
-    assertions.assert_json_field(response, "role", "ADMIN")
-
     test_data["admin"] = {**admin_creds, "id": response.json()["id"]}
-    # print(test_data["admin"])
 
-    # login_response = client.post("auth/login", json={
-    #     "email": admin_creds["email"],
-    #     "password": admin_creds["password"]
-    # })
-    # assertions.assert_status_code(login_response, 200)
-    # assertions.assert_json_field(login_response, "role", "ADMIN")
+    login_response = client.post("/auth/login", json={
+        "email": admin_creds["email"],
+        "password": admin_creds["password"]
+    })
+    assertions.assert_status_code(login_response, 200)
+    assertions.assert_json_field(login_response, "role", "ADMIN")
 
 def create_user_account():
-    """Create and verify admin account"""
-    # timestamp = int(time.time() * 1000)
-    admin_creds = {
-        "email": f"admin.test.125@example.com",
-        "password": "admin123456",
-        "firstName": "AdminTest",
-        "lastName": "UserTest",
-        "role": "ADMIN"
+    """Create and verify regular user account"""
+    timestamp = int(time.time() * 1000)
+    user_creds = {
+        "email": f"user.test.{timestamp}@example.com",
+        "password": "user123456",
+        "firstName": "RegularTest",
+        "lastName": "UserTest"
     }
-    response = client.post("auth/signup", json=admin_creds)
+    response = client.post("/auth/signup", json=user_creds)
     assertions.assert_status_code(response, 201)
-    test_data["admin"] = {**admin_creds, "id": response.json()["id"]}
+    test_data["user"] = {**user_creds, "id": response.json()["id"]}
 
-    login_response = client.post("auth/login", json={
-        "email": admin_creds["email"],
-        "password": admin_creds["password"]
+    login_response = client.post("/auth/login", json={
+        "email": user_creds["email"],
+        "password": user_creds["password"]
     })
     assertions.assert_status_code(login_response, 200)
-    assertions.assert_json_field(login_response, "role", "ADMIN")
+    assertions.assert_json_field(login_response, "role", "USER")
 
 def setup_test_books():
-    """Create and verify admin account"""
-    # timestamp = int(time.time() * 1000)
-    admin_creds = {
-        "email": f"admin.test.125@example.com",
-        "password": "admin123456",
-        "firstName": "AdminTest",
-        "lastName": "UserTest",
-        "role": "ADMIN"
-    }
-
-    login_response = client.post("auth/login", json={
-        "email": admin_creds["email"],
-        "password": admin_creds["password"]
-    })
-    assertions.assert_status_code(login_response, 200)
-    assertions.assert_json_field(login_response, "role", "ADMIN")
-
-
-# def create_user_account():
-#     """Create and verify regular user account"""
-#     timestamp = int(time.time() * 1000)
-#     user_creds = {
-#         "email": f"user.test.{timestamp}@example.com",
-#         "password": "user123456",
-#         "firstName": "RegularTest",
-#         "lastName": "UserTest"
-#     }
-#     response = client.post("/auth/signup", json=user_creds)
-#     assertions.assert_status_code(response, 201)
-#     test_data["user"] = {**user_creds, "id": response.json()["id"]}
-
-#     login_response = client.post("/auth/login", json={
-#         "email": user_creds["email"],
-#         "password": user_creds["password"]
-#     })
-#     assertions.assert_status_code(login_response, 200)
-#     assertions.assert_json_field(login_response, "role", "USER")
-
-# def setup_test_books():
-#     """Create initial test books for admin"""
-#     for i in range(1, 4):
-#         book_data = {
-#             "title": f"Test Book {time.time() * 1000}-{i}",
-#             "author": "Test Author",
-#             "genre": "FICTION",
-#             "availabilityStatus": "AVAILABLE"
-#         }
-#         response = client.post("books",
-#                             json=book_data,
-#                             auth=(test_data["admin"]["email"], test_data["admin"]["password"]))
-#         assertions.assert_status_code(response, 201)
-#         test_data["books"].append(response.json())
+    """Create initial test books for admin"""
+    for i in range(1, 4):
+        book_data = {
+            "title": f"Test Book {time.time() * 1000}-{i}",
+            "author": "Test Author",
+            "genre": "FICTION",
+            "availabilityStatus": "AVAILABLE"
+        }
+        response = client.post("books",
+                            json=book_data,
+                            auth=(test_data["admin"]["email"], test_data["admin"]["password"]))
+        assertions.assert_status_code(response, 201)
+        test_data["books"].append(response.json())
 
 def admin_create_delete_book():
     """Test admin can create and delete books"""
@@ -240,18 +197,18 @@ def return_rented_book():
     assertions.assert_status_code(return_response, 204)
 
 tests = {
-    "Create Admin Account": create_admin_account
-    # "Create User Account": create_user_account,
-    # "Setup Test Books": setup_test_books
-    # "Admin Can Create And Delete Book": admin_create_delete_book,
-    # "Create Books For Rental Tests": create_rental_test_books,
-    # "Admin Can Update Book": admin_update_book,
-    # "User Cannot Update Books": user_cannot_update_books,
-    # "User Cannot Create Books": user_cannot_create_books,
-    # "User Cannot Delete Books": user_cannot_delete_books,
-    # "User Can Rent Book": user_can_rent_book,
-    # "Rental Limit Is Enforced": rental_limit_enforced,
-    # "User Can Return Rented Book": return_rented_book
+    "Create Admin Account": create_admin_account,
+    "Create User Account": create_user_account,
+    "Setup Test Books": setup_test_books,
+    "Admin Can Create And Delete Book": admin_create_delete_book,
+    "Create Books For Rental Tests": create_rental_test_books,
+    "Admin Can Update Book": admin_update_book,
+    "User Cannot Update Books": user_cannot_update_books,
+    "User Cannot Create Books": user_cannot_create_books,
+    "User Cannot Delete Books": user_cannot_delete_books,
+    "User Can Rent Book": user_can_rent_book,
+    "Rental Limit Is Enforced": rental_limit_enforced,
+    "User Can Return Rented Book": return_rented_book
 }
 
 if __name__ == "__main__":

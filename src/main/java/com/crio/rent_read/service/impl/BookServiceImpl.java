@@ -28,7 +28,6 @@ public class BookServiceImpl implements BookService {
         return modelMapper.map(savedBook, BookResponse.class);
     }
 
-
     @Override
     @Transactional
     public BookResponse updateBookById(Long id, BookRequest updateBookRequest) {

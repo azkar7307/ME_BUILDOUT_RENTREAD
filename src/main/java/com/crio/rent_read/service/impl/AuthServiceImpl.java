@@ -22,25 +22,22 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
   
-
-    private final AppUserRepository userRepository;
     private final ValidationServiceImpl validationService;
+    private final AppUserRepository userRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
     @Override
     public UserResponse registerUser(RegisterRequest registerRequset) {
-        // validationService.validateUserExistsByEmail(registerRequset.getEmail());
+        validationService.validateUserExistsByEmail(registerRequset.getEmail());
         AppUser newUser = modelMapper.map(registerRequset, AppUser.class);
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         AppUser savedUser = userRepository.save(newUser);
         log.info(
             "User '{}' with email '{}' registered successfully.",
             savedUser.getId(),
-            // Util.mask(savedUser.getEmail())
-            savedUser.getEmail()
-
+            Util.mask(savedUser.getEmail())
         );
         return modelMapper.map(savedUser, UserResponse.class);
     }

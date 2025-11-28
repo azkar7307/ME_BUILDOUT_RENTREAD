@@ -44,6 +44,6 @@ public class BookController {
     public ResponseEntity<Void> deleteBookById(@PathVariable("book_id") Long id) {
         log.info("Request received to delete book '{}'", id);
         bookService.deleteBookById(id);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 }

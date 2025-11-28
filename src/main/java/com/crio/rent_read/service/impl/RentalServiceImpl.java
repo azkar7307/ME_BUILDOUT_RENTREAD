@@ -72,6 +72,4 @@ public class RentalServiceImpl implements RentalService {
         rental.setReturnDate(LocalDateTime.now());
         log.info("Book with Rental '{}' has been successfully returned", rentalId);
     }
-
-
 }

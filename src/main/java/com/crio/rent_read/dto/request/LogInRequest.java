@@ -19,7 +19,7 @@ public class LogInRequest {
     private String email;
     
     @NotBlank (message = "Password must not be empty")
-    // @Size(min = 6, message = "Password must contains at least 6 character long")
+    @Size(min = 6, message = "Password must contains at least 6 character long")
     private String password;
     
 }

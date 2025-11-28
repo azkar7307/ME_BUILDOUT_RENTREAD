@@ -3,10 +3,12 @@ package com.crio.rent_read.service.impl;
 import com.crio.rent_read.dto.request.BookRequest;
 import com.crio.rent_read.dto.response.BookResponse;
 import com.crio.rent_read.entity.Book;
+import com.crio.rent_read.entity.enums.Status;
 import com.crio.rent_read.repository.BookRepository;
 import com.crio.rent_read.service.BookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,5 +47,14 @@ public class BookServiceImpl implements BookService {
         Book book = validationService.validateAndGetBook(id);
         bookRepository.delete(book);
         log.info("Book '{}' deleted successfully", id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<BookResponse> getAllAvalilableBooks() {
+        List<Book> books = bookRepository.findByAvailabilityStatus(Status.AVAILABLE);
+        return books.stream()
+            .map(b -> modelMapper.map(b, BookResponse.class))
+            .toList();
     }
 }

@@ -2,12 +2,14 @@ package com.crio.rent_read.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import java.util.List;
 import com.crio.rent_read.dto.request.BookRequest;
 import com.crio.rent_read.dto.response.BookResponse;
 import com.crio.rent_read.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -45,5 +47,12 @@ public class BookController {
         log.info("Request received to delete book '{}'", id);
         bookService.deleteBookById(id);
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/available")
+    public ResponseEntity<List<BookResponse>> getAllAvalilableBooks() {
+        log.info("Request received for fetching all available Books");
+        List<BookResponse> response = bookService.getAllAvalilableBooks();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

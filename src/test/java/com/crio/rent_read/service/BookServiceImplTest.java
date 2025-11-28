@@ -72,7 +72,7 @@ public class BookServiceImplTest {
         // execute
         BookResponse response = bookServiceimpl.registerBook(request);
         assertNotNull(response);
-        assertEquals(sampleBook.getAuther(), response.getAuthor());
+        assertEquals(sampleBook.getAuthor(), response.getAuthor());
         assertEquals(Status.NOT_AVAILABLE.name(), response.getAvailabilityStatus());
 
         //verify

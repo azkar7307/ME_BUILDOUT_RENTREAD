@@ -33,7 +33,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public BookResponse updateBookById(Long id, BookRequest updateBookRequest) {
         Book book = validationService.validateAndGetBook(id);
-        book.setAuther(updateBookRequest.getAuthor());
+        book.setAuthor(updateBookRequest.getAuthor());
         book.setTitle(updateBookRequest.getTitle());
         book.setGenre(updateBookRequest.getGenre());
         book.setAvailabilityStatus(updateBookRequest.getAvailabilityStatus());

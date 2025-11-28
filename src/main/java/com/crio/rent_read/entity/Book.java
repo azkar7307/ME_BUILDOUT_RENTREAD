@@ -41,7 +41,7 @@ public class Book {
     private Long id;
 
     private String title;
-    private String auther;
+    private String author;
     private String genre;
 
     @Enumerated(EnumType.STRING)

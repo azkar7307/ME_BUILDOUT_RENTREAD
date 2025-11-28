@@ -46,23 +46,14 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserResponse loginUser(LogInRequest request) {
         
-        authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                request.getEmail(), 
-                request.getPassword()                
-            )
-        );                                      
-                
-        
-        // authenticationManager.authenticate(authentication);
-        AppUser user = validationService.validateAndGetUserByEmail(request.getEmail());
-        log.info("User '{}' login successfull", Util.mask(user.getEmail()));
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        );
+
+        AppUser user = (AppUser) authentication.getPrincipal();
+        log.info("User '{}' login successful", Util.mask(user.getEmail()));
+
         return modelMapper.map(user, UserResponse.class);
-                
-                // Authentication authentication = new UsernamePasswordAuthenticationToken(
-                //     request.getEmail(), 
-                //     request.getPassword()
-                // );
     }
 
 }

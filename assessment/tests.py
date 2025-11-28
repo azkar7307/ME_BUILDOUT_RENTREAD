@@ -44,11 +44,11 @@ def create_user_account():
         "firstName": "RegularTest",
         "lastName": "UserTest"
     }
-    response = client.post("auth/signup", json=user_creds)
+    response = client.post("/auth/signup", json=user_creds)
     assertions.assert_status_code(response, 201)
     test_data["user"] = {**user_creds, "id": response.json()["id"]}
 
-    login_response = client.post("auth/login", json={
+    login_response = client.post("/auth/login", json={
         "email": user_creds["email"],
         "password": user_creds["password"]
     })

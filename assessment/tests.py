@@ -24,11 +24,11 @@ def create_admin_account():
         "lastName": "UserTest",
         "role": "ADMIN"
     }
-    response = client.post("auth/signup", json=admin_creds)
+    response = client.post("/auth/signup", json=admin_creds)
     assertions.assert_status_code(response, 201)
     test_data["admin"] = {**admin_creds, "id": response.json()["id"]}
 
-    login_response = client.post("auth/login", json={
+    login_response = client.post("/auth/login", json={
         "email": admin_creds["email"],
         "password": admin_creds["password"]
     })

@@ -35,7 +35,9 @@ public class SecurityConfig {
     httpSecurity.authenticationProvider(authenticationProvider());
 
     httpSecurity.authorizeHttpRequests(configurer -> configurer
-      .requestMatchers( "/auth/signup", "/auth/login")
+      .requestMatchers( "/auth/signup")
+      .permitAll()
+      .requestMatchers("/auth/login")
       .permitAll()
 
       .requestMatchers("/books/**")

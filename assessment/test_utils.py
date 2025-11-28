@@ -82,6 +82,7 @@ class TestAssertions:
     def assert_json_field(response: requests.Response, field: str, expected_value: Any):
         """Assert JSON response field value"""
         data = response.json()
+        print(data)
         assert field in data, f"Field '{field}' not found in response"
         assert data[field] == expected_value, \
             f"Expected {field}='{expected_value}', got '{data[field]}'"

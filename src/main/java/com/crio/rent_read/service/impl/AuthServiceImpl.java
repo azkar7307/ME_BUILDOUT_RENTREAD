@@ -38,7 +38,9 @@ public class AuthServiceImpl implements AuthService {
         log.info(
             "User '{}' with email '{}' registered successfully.",
             savedUser.getId(),
-            Util.mask(savedUser.getEmail())
+            // Util.mask(savedUser.getEmail())
+            savedUser.getEmail()
+
         );
         return modelMapper.map(savedUser, UserResponse.class);
     }

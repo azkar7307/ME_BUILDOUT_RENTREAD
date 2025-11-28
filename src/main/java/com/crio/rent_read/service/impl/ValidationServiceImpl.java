@@ -113,7 +113,9 @@ public class ValidationServiceImpl implements ValidationService {
     public AppUser validateAndGetUserByEmail(String email) {
         AppUser user = userRepository.findByEmail(email);
         if (user == null) {
-            throw new EntityNotFoundException(Util.mask(email), "User");
+            // throw new EntityNotFoundException(Util.mask(email), "User");
+            throw new EntityNotFoundException(email, "User");
+
         }
         return user;
     }

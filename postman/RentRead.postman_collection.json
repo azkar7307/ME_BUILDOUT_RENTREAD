@@ -1,0 +1,741 @@
+{
+	"info": {
+		"_postman_id": "0e4fe4a9-2719-4582-9fcd-7d1a24130fbc",
+		"name": "RentRead",
+		"description": "# RentRead API Documentation\n\nThe RentRead API provides endpoints for managing users, books, rentals, and authentication for a book rental platform. This documentation covers all endpoints, grouped by resource and user role (ADMIN, USER).\n\n## Authentication\n\n- Endpoints for user and admin registration and login.\n    \n- JWT or session-based authentication is typically required for protected endpoints.\n    \n\n## Books\n\n- Register new books (admin only).\n    \n- Retrieve available books.\n    \n\n## Rentals\n\n- Rent and return books.\n    \n- View active rentals for users.\n    \n\n## Folders & Requests\n\n- **ADMIN**: Admin registration, login, and book management.\n    \n- **USER**: User registration, login, book rental, and viewing rentals.\n    \n\nEach request includes method, URL, and a brief description. Refer to individual requests for body and response details.\n\n---\n\n- [View Collection](https://collection/37160902-0e4fe4a9-2719-4582-9fcd-7d1a24130fbc)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37160902",
+		"_collection_link": "https://www.postman.com/navigation-participant-9941289/workspace/collections/collection/37160902-0e4fe4a9-2719-4582-9fcd-7d1a24130fbc?action=share&source=collection_link&creator=37160902"
+	},
+	"item": [
+		{
+			"name": "USER",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user.test@example.com\",\r\n    \"password\": \"user123456\",\r\n    \"firstName\": \"RegularTest\",\r\n    \"lastName\": \"UserTest\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/auth/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user.test@example.com\",\r\n    \"password\": \"user123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user.test@example.com\",\r\n    \"password\": \"user123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Book",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{vault:authorization-password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user.test@example.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Book 2\",\r\n    \"author\": \"Test Author user\",\r\n    \"genre\": \"FICTION\",\r\n    \"availabilityStatus\": \"AVAILABLE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/books",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Book Unauth",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Book 2\",\r\n    \"author\": \"Test Author user\",\r\n    \"genre\": \"FICTION\",\r\n    \"availabilityStatus\": \"AVAILABLE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/books",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Book Available",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{vault:authorization-password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user.test@example.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Book 2\",\r\n    \"author\": \"Test Author user\",\r\n    \"genre\": \"FICTION\",\r\n    \"availabilityStatus\": \"AVAILABLE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/rentals/available/books",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"rentals",
+								"available",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rent a Book",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{vault:authorization-password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user.test@example.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Book 2\",\r\n    \"author\": \"Test Author user\",\r\n    \"genre\": \"FICTION\",\r\n    \"availabilityStatus\": \"AVAILABLE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/rentals/users/1/books/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"rentals",
+								"users",
+								"1",
+								"books",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rent a Book Copy",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{vault:authorization-password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user.test@example.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Book 2\",\r\n    \"author\": \"Test Author user\",\r\n    \"genre\": \"FICTION\",\r\n    \"availabilityStatus\": \"AVAILABLE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/rentals/users/1/books/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"rentals",
+								"users",
+								"1",
+								"books",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rent a Book Copy 2",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{vault:authorization-password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user.test@example.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Book 2\",\r\n    \"author\": \"Test Author user\",\r\n    \"genre\": \"FICTION\",\r\n    \"availabilityStatus\": \"AVAILABLE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/rentals/users/2/books/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"rentals",
+								"users",
+								"2",
+								"books",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User's Active Rentals",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{vault:authorization-password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user.test@example.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Book 2\",\r\n    \"author\": \"Test Author user\",\r\n    \"genre\": \"FICTION\",\r\n    \"availabilityStatus\": \"AVAILABLE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/rentals/active-rentals/users/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"rentals",
+								"active-rentals",
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Return a Book",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{vault:authorization-password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user.test@example.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Book 2\",\r\n    \"author\": \"Test Author user\",\r\n    \"genre\": \"FICTION\",\r\n    \"availabilityStatus\": \"AVAILABLE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/rentals/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"rentals",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ADMIN",
+			"item": [
+				{
+					"name": "Register as Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@rentread.com\",\r\n    \"password\": \"admin123456\",\r\n    \"firstName\": \"admin\",\r\n    \"lastName\": \"test\",\r\n    \"role\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/auth/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login as Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@rentread.com\",\r\n    \"password\": \"admin123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Book",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{vault:authorization-password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin@rentread.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Book 1\",\r\n    \"author\": \"Test Author 1\",\r\n    \"genre\": \"FICTION\",\r\n    \"availabilityStatus\": \"AVAILABLE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/books",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Book 2",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{vault:authorization-password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin@rentread.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Book Two\",\r\n    \"author\": \"Test Author Two\",\r\n    \"genre\": \"FICTION\",\r\n    \"availabilityStatus\": \"AVAILABLE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/books",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Book 3",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{vault:authorization-password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin@rentread.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Book 3\",\r\n    \"author\": \"Test Author 3\",\r\n    \"genre\": \"FICTION\",\r\n    \"availabilityStatus\": \"AVAILABLE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/books",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "USER Register a Book",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{vault:authorization-password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin@rentread.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Book 3\",\r\n    \"author\": \"Test Author 3\",\r\n    \"genre\": \"FICTION\",\r\n    \"availabilityStatus\": \"AVAILABLE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/books",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Book is Registered by Unauth",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{vault:authorization-password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin@rentread.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Book 3\",\r\n    \"author\": \"Test Author 3\",\r\n    \"genre\": \"FICTION\",\r\n    \"availabilityStatus\": \"AVAILABLE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/books",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

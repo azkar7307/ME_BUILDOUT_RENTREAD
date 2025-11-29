@@ -11,7 +11,6 @@ import com.crio.rent_read.entity.Book;
 import com.crio.rent_read.entity.Rental;
 import com.crio.rent_read.entity.enums.Status;
 import com.crio.rent_read.exception.BadRequestException;
-import com.crio.rent_read.exception.ConflictException;
 import com.crio.rent_read.repository.AppUserRepository;
 import com.crio.rent_read.repository.BookRepository;
 import com.crio.rent_read.repository.RentalRepository;
@@ -70,7 +69,7 @@ public class ValidationServiceImplTest {
 
         // execute
         assertThrows(
-            ConflictException.class,
+            BadRequestException.class,
             () -> validationServiceImpl.validateRentalEligiblity(1L)
         );
 

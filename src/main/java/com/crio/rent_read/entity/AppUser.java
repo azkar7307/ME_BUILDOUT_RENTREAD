@@ -56,7 +56,6 @@ public class AppUser implements UserDetails {
             this.role = Role.USER;
         }
     }
-
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

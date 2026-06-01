@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -24,8 +25,8 @@ import java.util.List;
         name = "books",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "unique_auther_book_title",
-                        columnNames = {"title", "auther"}
+                        name = "unique_author_book_title",
+                        columnNames = {"title", "author"}
                 )
         })
 @Getter
@@ -40,15 +41,26 @@ public class Book {
     @EqualsAndHashCode.Include
     private Long id;
 
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private String author;
+
+    @Column(nullable = false)
     private String genre;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Status availabilityStatus = Status.AVAILABLE;
+    private Status availabilityStatus;
 
     @OneToMany(mappedBy = "book")
     private List<Rental> rentals = new ArrayList<>();
-}
 
+    @PrePersist
+    public void prePersist() {
+        if (availabilityStatus == null) {
+            availabilityStatus = Status.AVAILABLE;
+        }
+    }
+}

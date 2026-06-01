@@ -33,9 +33,9 @@ public class SecurityConfig {
     httpSecurity.authenticationProvider(authenticationProvider());
 
     httpSecurity.authorizeHttpRequests(configurer -> configurer
-      .requestMatchers( "auth/signup", "auth/login").permitAll()
+      .requestMatchers( "/auth/signup", "/auth/login").permitAll()
       .requestMatchers("/books/available").authenticated()
-      .requestMatchers("/books/*", "books/**").hasAnyRole("ADMIN")
+      .requestMatchers("/books/*", "/books/**").hasAnyRole("ADMIN")
       .anyRequest()
       .authenticated()
       );

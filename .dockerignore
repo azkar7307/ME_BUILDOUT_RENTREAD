@@ -1,0 +1,36 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+*.iml
+
+# Build outputs
+build
+.gradle
+out
+target
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Documentation
+README.md
+
+# Environment files
+.env
+
+# Docker files (optional)
+docker-compose.yaml
+
+# Postman collections
+postman-collection
+
+# Node modules (if frontend exists)
+node_modules

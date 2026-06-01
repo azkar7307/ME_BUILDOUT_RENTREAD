@@ -1,89 +1,298 @@
-# 📚 Book Rental System — Problem Statement
+# 📚 RentRead — Book Rental Management System
 
-Develop a **RESTful API** using **Spring Boot** to manage an online book rental system. Persist data using  **MySQL** .
+RentRead is a RESTful backend application built using Spring Boot for managing an online book rental system.
+The application provides secure authentication and authorization, book management, rental tracking, validation, centralized exception handling, database migration support using Flyway, and containerized deployment using Docker.
 
-## 🔑 Key Features (Summary)
+---
 
-> This project is a simplified book rental system. Focus on implementing the specified features correctly and defend any design choices you make (e.g., rental permissions, DB schema).
+# 🚀 Features
 
-* Authentication & Authorization (Basic Auth)
-* Two roles: **USER** and **ADMIN**
-* Two endpoint categories:
+## 🔐 Authentication & Authorization
 
-  * **Public** (e.g., registration, login) — accessible to anyone
-  * **Private** (requires authentication; may also require specific authorization)
-* Admin-only operations: creating, updating, deleting books (as specified)
-* Business rules (e.g., rental limits) enforced by service layer
-* Logging of application events and errors
-* Unit tests using **MockMvc** + **Mockito** (minimum 10 tests)
-* Generate a runnable **JAR** and include run instructions
-* Public Postman collection included in README
+* HTTP Basic Authentication using Spring Security
+* Role-based access control (RBAC)
+* Two roles supported:
 
-## 📂 Postman Collection
+  * `ADMIN`
+  * `USER`
+* BCrypt password hashing
+* Public and protected endpoints
+* Method-level authorization for admin-only operations
 
-### Option - 1
+---
+
+## 📚 Book Management
+
+* Create, update, delete books (ADMIN only)
+* Browse available books
+* Track book availability status
+
+---
+
+## 🔄 Rental Management
+
+* Rent available books
+* Return rented books
+* Restrict users to maximum 2 active rentals
+* Automatically update book availability during rent/return operations
+
+---
+
+## ✅ Validation & Error Handling
+
+* Request validation using Jakarta Validation
+* Global exception handling using `@RestControllerAdvice`
+* Meaningful HTTP status codes
+* Consistent API error response structure
+
+---
+
+## 🛢 Database Management
+
+* MySQL database integration
+* Flyway database migration support
+* Schema versioning and validation
+* Foreign key constraints and relational integrity
+
+---
+
+## 🐳 Docker Support
+
+* Dockerized Spring Boot application
+* Docker Compose support for application + MySQL
+* Easy local setup using containers
+
+---
+
+## 🧪 Testing
+
+* Unit tests using:
+
+  * MockMvc
+  * Mockito
+  * JUnit 5
+* Security and controller layer testing
+* Minimum 10 unit tests implemented
+
+---
+
+# 🏗 Tech Stack
+
+| Technology      | Purpose                        |
+| --------------- | ------------------------------ |
+| Java 17         | Programming Language           |
+| Spring Boot     | Backend Framework              |
+| Spring Security | Authentication & Authorization |
+| Spring Data JPA | ORM                            |
+| MySQL           | Relational Database            |
+| Flyway          | Database Migration             |
+| Docker          | Containerization               |
+| Docker Compose  | Multi-container orchestration  |
+| Gradle          | Build Tool                     |
+| JUnit 5         | Testing                        |
+| Mockito         | Mocking                        |
+| MockMvc         | API Testing                    |
+| Lombok          | Boilerplate Reduction          |
+
+---
+
+# 🏛 Architecture
+
+The project follows a layered architecture:
+
+```text
+Controller → Service → Repository → Database
+```
+
+## Layers
+
+### Controller Layer
+
+Handles HTTP requests and responses.
+
+### Service Layer
+
+Contains business logic and validation rules.
+
+### Repository Layer
+
+Handles database interaction using Spring Data JPA.
+
+### Entity Layer
+
+Represents database tables and relationships.
+
+---
+
+# 🔐 Security Design
+
+The application uses Spring Security with HTTP Basic Authentication.
+
+## Public Endpoints
+
+Accessible without authentication:
+
+* `/auth/signup`
+* `/auth/login`
+
+## Protected Endpoints
+
+Require authentication.
+
+## Authorization Rules
+
+| Endpoint            | Access      |
+| ------------------- | ----------- |
+| GET available books | USER, ADMIN |
+| Create book         | ADMIN       |
+| Update book         | ADMIN       |
+| Delete book         | ADMIN       |
+| Rent books          | USER, ADMIN |
+| Return books        | USER, ADMIN |
+
+---
+
+# 🛢 Database Design
+
+## Main Tables
+
+* users
+* books
+* rentals
+
+## Relationships
+
+* One user can have many rentals
+* One book can have many rentals historically
+* One active rental per book at a time
+
+## Important Constraints
+
+* Unique email for users
+* Foreign key constraints
+* Rental limit validation
+* Book availability validation
+
+---
+
+# ✈️ Flyway Migration
+
+Flyway is used for:
+
+* schema versioning
+* migration tracking
+* database consistency
+* automatic schema validation
+
+Migration scripts are located inside:
+
+```text
+src/main/resources/db/migration
+```
+
+---
+
+# 📂 Postman Collection
+
+## Option - 1
 
 Access the Learning Navigator API collection using the link below.
 **[Importer Link to Postman Collection](https://www.postman.com/navigation-participant-9941289/collections/request/nq1lu0w/register-user)**
 
-### Option - 2
+## Option - 2
 
 Postman collection file included in postman/RentRead.postman_collection.json
 
 Import the collection to test all endpoints quickly
 
-## ✅ Requirements (Detailed)
+---
 
-### Authentication & Users
+# 🐳 Docker Setup
 
-* Support user registration and login using email and password.
-* Passwords must be hashed using  **BCrypt** .
-* User fields: `email`, `password`, `firstName`, `lastName`, `role`.
-* Default role: **USER** (when not specified).
-* Use **Basic Auth** for protected endpoints.
+## Build Images and Start Containers
 
-### Book Management
+```bash id="6n57rj"
+docker compose up --build
+```
 
-* Book fields: `title`, `author`, `genre`, `availabilityStatus`.
-* `availabilityStatus` indicates whether the book is available for rent.
-* Any authenticated user may browse available books.
-* Only admins may create, update, or delete books.
+This command:
 
-### Roles & Authorization
+* Builds the application image
+* Starts MySQL container
+* Starts RentRead container
 
-* Role `USER`: general access to browse and rent books (subject to business rules).
-* Role `ADMIN`: full management rights for books (create, update, delete).
-* Private endpoints require authentication; some private endpoints also require role-based authorization.
+---
 
-### Rental Management
+## Start Existing Containers in Detached Mode
 
-* Users can rent available books.
-* A user may have  **at most two active rentals** . If the limit is reached, the service must return an error.
-* Users can return books they have rented.
-* Rental updates must correctly change book availability.
+```bash id="zj70om"
+docker compose up -d
+```
 
-### Validation & Error Handling
+Runs containers in the background.
 
-* Validate inputs and handle common error scenarios.
-* Return appropriate HTTP status codes (e.g., `400`, `403`, `404`, `409`, `500`).
-* Use a global exception handler (`@RestControllerAdvice`) to centralize error responses.
+---
 
-### Logging & Tests
+## Stop Containers
 
-* Log informational events and errors via a logging framework (e.g., SLF4J + Logback).
-* Include at least 10 unit tests using **MockMvc** and  **Mockito** .
+```bash id="9lm1c0"
+docker compose down
+```
 
-## 📦 Deliverables & Documentation
 
-* Meaningful, incremental commit messages (use Conventional Commits where possible).
-* A descriptive `README.md` that documents running, testing, and API usage.
-* Include a public Postman collection link in the README.
+# ⚙️ Environment Variables
 
-## 🧩 Implementation Notes
+Example configuration:
 
-* Use a layered architecture:  **Entity → Repository → Service → Controller** .
-* Design database schema carefully; be ready to justify decisions (e.g., relationships, indexes).
-* Enforce foreign-key constraints in MySQL where appropriate.
+```yaml
+SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/rent_read
+SPRING_DATASOURCE_USERNAME=root
+SPRING_DATASOURCE_PASSWORD=password
+SPRING_PROFILES_ACTIVE=local
+```
+
+---
+
+# ▶️ Running Locally
+
+## 1. Clone Repository
+
+```bash
+git clone <repository-url>
+cd rent-read
+```
+
+---
+
+## 2. Build Application
+
+```bash
+./gradlew clean build
+```
+
+---
+
+## 3. Run Application
+
+```bash
+java -jar build/libs/rent-read-0.0.1-SNAPSHOT.jar
+```
+
+Application runs on:
+
+```text
+http://localhost:8081
+```
+
+---
+
+# 🧪 Running Tests
+
+```bash
+./gradlew test
+```
+
+---
 
 ## 🌐 Base URL
 
@@ -359,3 +568,19 @@ Import the collection to test all endpoints quickly
   "localDateTime": "2025-11-29T09:41:53.624575"
 }
 ```
+
+# 🔮 Future Improvements
+- JWT Authentication
+- Refresh Tokens
+- API Rate Limiting
+- Pagination & Sorting
+- API Documentation using Swagger/OpenAPI
+- Distributed Caching using Redis
+- CI/CD Pipeline
+- Kubernetes Deployment
+- Notification System
+- Audit Logging
+
+# 👨‍💻 Author
+
+Mohammad Azkar

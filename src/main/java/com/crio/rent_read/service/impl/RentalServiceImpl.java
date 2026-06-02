@@ -55,7 +55,7 @@ public class RentalServiceImpl implements RentalService {
     @Transactional(readOnly = true)
     public List<RentalResponse> getUserActiveRentals(Long userId) {
         List<Rental> activerRentals = rentalRepository.findAllUsersActiveRentals(userId);
-        log.info("active rented Book list fetched from db", userId);
+        log.info("User {} active rented Book list fetched from db", userId);
         return activerRentals.stream()
             .map(r -> modelMapper.map(r, RentalResponse.class))
             .toList();
